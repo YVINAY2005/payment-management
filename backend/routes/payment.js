@@ -1,7 +1,8 @@
-const express = require('express');
+import express from 'express';
+import Payment from '../models/Payment.js';
+import { auth } from '../middleware/auth.js';
+
 const router = express.Router();
-const Payment = require('../models/Payment');
-const { auth } = require('../middleware/auth');
 
 // Get all payments for logged in user
 router.get('/', auth, async (req, res) => {
@@ -23,7 +24,12 @@ router.post('/', auth, async (req, res) => {
         await payment.save();
         res.json(payment);
     } catch (err) {
-        res.status(500).json({ message: 'Server error' });
+        console.error('Error adding payment:', err);
+        res.status(500).json({ 
+            message: 'Server error', 
+            error: err.message,
+            stack: err.stack 
+        });
     }
 });
 
@@ -37,7 +43,8 @@ router.put('/:id', auth, async (req, res) => {
         payment = await Payment.findByIdAndUpdate(req.params.id, req.body, { new: true });
         res.json(payment);
     } catch (err) {
-        res.status(500).json({ message: 'Server error' });
+        console.error('Error updating payment:', err);
+        res.status(500).json({ message: 'Server error', error: err.message });
     }
 });
 
@@ -51,8 +58,9 @@ router.delete('/:id', auth, async (req, res) => {
         await payment.deleteOne();
         res.json({ message: 'Payment method removed' });
     } catch (err) {
-        res.status(500).json({ message: 'Server error' });
+        console.error('Error deleting payment:', err);
+        res.status(500).json({ message: 'Server error', error: err.message });
     }
 });
 
-module.exports = router;
+export default router;

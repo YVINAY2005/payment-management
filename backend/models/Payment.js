@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const PaymentSchema = new mongoose.Schema({
     user: {
@@ -8,7 +8,7 @@ const PaymentSchema = new mongoose.Schema({
     },
     paymentType: {
         type: String,
-        enum: ['Bank', 'Paytm', 'UPI', 'PayPal', 'USDT'],
+        enum: ['Bank', 'Paytm', 'UPI', 'PayPal', 'USDT', 'GPay', 'PhonePe', 'OPay', 'PalmPay'],
         required: true
     },
     // Bank Fields
@@ -24,7 +24,15 @@ const PaymentSchema = new mongoose.Schema({
     // PayPal
     paypalEmail: String,
     // USDT
-    usdtAddress: String
+    usdtAddress: String,
+    // GPay
+    gpayNumber: String,
+    // PhonePe
+    phonePeNumber: String,
+    // OPay
+    opayNumber: String,
+    // PalmPay
+    palmpayNumber: String
 }, { timestamps: true });
 
-module.exports = mongoose.model('Payment', PaymentSchema);
+export default mongoose.model('Payment', PaymentSchema);

@@ -1,8 +1,9 @@
-const express = require('express');
+import express from 'express';
+import Payment from '../models/Payment.js';
+import User from '../models/User.js';
+import { auth, adminAuth } from '../middleware/auth.js';
+
 const router = express.Router();
-const Payment = require('../models/Payment');
-const User = require('../models/User');
-const { auth, adminAuth } = require('../middleware/auth');
 
 // Get all users' payment info with search and filter
 router.get('/payments', auth, adminAuth, async (req, res) => {
@@ -31,4 +32,4 @@ router.get('/payments', auth, adminAuth, async (req, res) => {
     }
 });
 
-module.exports = router;
+export default router;

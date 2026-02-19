@@ -1,8 +1,7 @@
-const jwt = require('jsonwebtoken');
-const User = require('../models/User');
-const Admin = require('../models/Admin');
+import jwt from 'jsonwebtoken';
+import User from '../models/User.js';
 
-const auth = async (req, res, next) => {
+export const auth = async (req, res, next) => {
     try {
         const token = req.header('Authorization')?.replace('Bearer ', '');
         if (!token) {
@@ -11,16 +10,7 @@ const auth = async (req, res, next) => {
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         
-        // Check User collection first
-        let user = await User.findById(decoded.id).select('-password');
-        
-        // If not found, check Admin collection
-        if (!user) {
-            user = await Admin.findById(decoded.id).select('-password');
-            if (user) {
-                user.role = 'admin'; // Add virtual role for middleware consistency
-            }
-        }
+        const user = await User.findById(decoded.id).select('-password');
 
         if (!user) {
             return res.status(401).json({ message: 'User not found' });
@@ -33,12 +23,10 @@ const auth = async (req, res, next) => {
     }
 };
 
-const adminAuth = (req, res, next) => {
+export const adminAuth = (req, res, next) => {
     if (req.user && req.user.role === 'admin') {
         next();
     } else {
         res.status(403).json({ message: 'Admin access denied' });
     }
 };
-
-module.exports = { auth, adminAuth };
