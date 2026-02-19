@@ -1,4 +1,5 @@
 import express from 'express';
+import { networkInterfaces } from 'os';
 
 console.log('Starting server...');
 
@@ -34,4 +35,17 @@ app.use('/api/payments', paymentRoutes);
 app.use('/api/admin', adminRoutes);
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, '0.0.0.0', () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server running on port ${PORT}`);
+    
+    // Display local IP addresses
+    const nets = networkInterfaces();
+    console.log('Available on:');
+    for (const name of Object.keys(nets)) {
+        for (const net of nets[name]) {
+            if (net.family === 'IPv4' && !net.internal) {
+                console.log(`  http://${net.address}:${PORT}`);
+            }
+        }
+    }
+});

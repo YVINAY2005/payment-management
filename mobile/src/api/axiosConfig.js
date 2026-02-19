@@ -1,11 +1,22 @@
 import axios from 'axios';
 import Constants from 'expo-constants';
 
+// --- CONFIGURATION ---
+// If you deploy your backend to the cloud (Render, Heroku, etc.), put the URL here.
+// Example: 'https://my-app.onrender.com/api'
+const CLOUD_API_URL = ''; 
+
 // AUTOMATIC LAN IP DETECTION
 // This automatically detects your computer's IP address from Expo.
 // No manual IP updates or tunnels required!
 
 const getBaseUrl = () => {
+    // 0. Use Cloud URL if available (Best for "Any Network" access)
+    if (CLOUD_API_URL) {
+        console.log('Using Cloud API URL:', CLOUD_API_URL);
+        return CLOUD_API_URL;
+    }
+
     // 1. Try to get IP from Expo environment (Standard/Optimized way)
     if (Constants.expoConfig?.hostUri) {
         const hostUri = Constants.expoConfig.hostUri;
