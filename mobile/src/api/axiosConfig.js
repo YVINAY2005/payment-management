@@ -4,7 +4,7 @@ import Constants from 'expo-constants';
 // --- CONFIGURATION ---
 // If you deploy your backend to the cloud (Render, Heroku, etc.), put the URL here.
 // Example: 'https://my-app.onrender.com/api'
-const CLOUD_API_URL = ''; 
+const CLOUD_API_URL = 'https://payment-management-backend.onrender.com/api'; 
 
 // AUTOMATIC LAN IP DETECTION
 // This automatically detects your computer's IP address from Expo.
